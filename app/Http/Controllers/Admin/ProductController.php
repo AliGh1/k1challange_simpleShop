@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\ProductGallery;
+use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ProductGalleryController extends Controller
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +42,10 @@ class ProductGalleryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ProductGallery  $productGallery
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(ProductGallery $productGallery)
+    public function show(Product $product)
     {
         //
     }
@@ -52,10 +53,10 @@ class ProductGalleryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ProductGallery  $productGallery
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProductGallery $productGallery)
+    public function edit(Product $product)
     {
         //
     }
@@ -64,10 +65,10 @@ class ProductGalleryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ProductGallery  $productGallery
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProductGallery $productGallery)
+    public function update(Request $request, Product $product)
     {
         //
     }
@@ -75,10 +76,10 @@ class ProductGalleryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ProductGallery  $productGallery
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProductGallery $productGallery)
+    public function destroy(Product $product)
     {
         //
     }
