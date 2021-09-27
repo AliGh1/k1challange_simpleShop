@@ -12,4 +12,14 @@ class Product extends Model
     protected $fillable = [
         'title' , 'description', 'image' , 'price', 'discount' , 'quantity' , 'sold'
     ];
+
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function gallery(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ProductGallery::class);
+    }
 }

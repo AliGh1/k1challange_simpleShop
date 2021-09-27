@@ -10,4 +10,9 @@ class ProductGallery extends Model
     use HasFactory;
 
     protected $fillable = ['image' , 'alt'];
+
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
 }
