@@ -8,16 +8,22 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="grid grid-cols-4 gap-4">
+                <div class="auto-rows-auto col-span-4 md:col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-2 flex flex-wrap md:block bg-white md:space-y-1">
+                        <x-responsive-nav-link :class="'rounded mx-1 md:mx-0'" :href="route('admin.products.index')" :active="request()->routeIs('admin.products.index')">
+                            {{ __('Products') }}
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :class="'rounded mx-1 md:mx-0'" :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.index')">
+                            {{ __('Categories') }}
+                        </x-responsive-nav-link>
+                    </div>
+                </div>
                 <div class="col-span-4 md:col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        You're logged as admin!
+                    <div class="p-6 bg-white">
+                        {{ $slot ?? "You're logged as admin!" }}
                     </div>
                 </div>
-                <div class="col-span-4 md:col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        You're logged as admin!
-                    </div>
-                </div>
+
             </div>
 
         </div>
