@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 | contains the "web, auth, auth.admin" middleware group. Now create something great!
 |
 */
-
+Route::get('/' , function() {
+    return view('admin.index');
+});
 Route::resource('products', ProductController::class);
 Route::resource('products.gallery', ProductGalleryController::class);
 Route::resource('categories', CategoryController::class);
