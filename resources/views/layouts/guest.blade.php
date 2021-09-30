@@ -14,7 +14,7 @@
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Icons -->
-        <script src="https://kit.fontawesome.com/21560d56e2.js" crossorigin="anonymous"></script>
+{{--        <script src="https://kit.fontawesome.com/21560d56e2.js" crossorigin="anonymous"></script>--}}
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>

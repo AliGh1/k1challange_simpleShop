@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->string('image');
             $table->integer('price');
-            $table->integer('discount');
+            $table->integer('discount')->nullable();
 
             $table->integer('quantity')->default(0);
             $table->integer('sold')->default(0);

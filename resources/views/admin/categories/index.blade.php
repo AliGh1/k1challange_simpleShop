@@ -23,23 +23,30 @@
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-            <tr>
-                <td class="px-6 py-4">
-                    <div class="text-sm text-gray-900">Laptop</div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="text-sm text-gray-900">Digital</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Show</a>
-                    <a href="#" class="text-yellow-500 hover:text-yellow-900">Edit</a>
-                    <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
-                </td>
-            </tr>
+            @foreach($categories as $category)
+                <tr>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-gray-900">{{$category->name}}</div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm {{ $category->parent_id ? 'text-gray-900' : 'text-gray-400'}}">{{$categories->find($category->parent_id)?->name ?? 'none'}}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
+                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Show</a>
+                        <a href="#" class="text-yellow-500 hover:text-yellow-900">Edit</a>
+                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                    </td>
+                </tr>
+            @endforeach
 
             </tbody>
         </table>
+        <div>
+            {{ $categories->render() }}
+        </div>
     </div>
+
+
 
 
 </x-admin-panel-layout>

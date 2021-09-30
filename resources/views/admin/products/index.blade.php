@@ -29,34 +29,52 @@
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-            <tr>
-                <td class="px-4 py-2">
-                    <div class="h-14 w-14">
-                        <img class="h-14 w-14 rounded" src="https://fakeimg.pl/200/" alt="fake img">
-                    </div>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="text-sm text-gray-900">Iphone 13 Pro Max 512GB Midnight Black</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-red-600 line-through hidden">10,000$</div>
-                    <div class="text-sm text-gray-500">8,000$</div>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="text-sm text-gray-900 px-2 hidden">15</div>
-                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-600">
-                      Out of stock
-                    </span>
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">Gallery</a>
-                    <a href="#" class="text-yellow-500 hover:text-yellow-900">Edit</a>
-                    <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
-                </td>
-            </tr>
+            @foreach($products as $product)
+                <tr>
+                    <td class="px-4 py-2">
+                        <div class="h-14 w-14">
+                            <img class="h-14 w-14 rounded" src="{{ $product->image }}" alt="{{ $product->name }}">
+                        </div>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="text-sm text-gray-900">{{ $product->title }}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm {{ ($product->discount ? 'text-red-600 line-through' : 'text-gray-900')  }} ">
+                            {{ $product->price }}$
+                        </div>
+
+                        @if($product->discount)
+                            <div class="text-sm text-gray-500">{{ $product->discount }}$</div>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        @if(!$product->quantity)
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-600">
+                              Out of stock
+                            </span>
+                        @elseif($product->quantity < 5)
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-600">
+                              Only {{ $product->quantity }}
+                            </span>
+                        @else
+                            <div class="text-sm px-2 text-gray-900">{{ $product->quantity}}</div>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
+                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Gallery</a>
+                        <a href="#" class="text-yellow-500 hover:text-yellow-900">Edit</a>
+                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                    </td>
+                </tr>
+            @endforeach
 
             </tbody>
         </table>
+
+        <div>
+            {{ $products->render() }}
+        </div>
     </div>
 
 

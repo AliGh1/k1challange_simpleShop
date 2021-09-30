@@ -15,28 +15,45 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.categories.index');
+        $categories = Category::latest()->paginate(10);
+        return view('admin.categories.index', compact('categories'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        return view('admin.categories.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
-        //
+        if($request->parent_id) {
+            $request->validate([
+                'parent_id' => 'exists:categories,id'
+            ]);
+        }
+
+        $request->validate([
+            'name' => 'required|min:3|string'
+        ]);
+
+        Category::create([
+            'name' => $request->name,
+            'parent_id' => $request->parent ?? 0
+        ]);
+
+        return redirect(route('admin.categories.index'));
     }
 
     /**
