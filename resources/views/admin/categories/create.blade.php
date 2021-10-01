@@ -25,7 +25,7 @@
 
                 <select id="parent" name="parent_id" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                     <option value="0"></option>
-                    @foreach($categories as $category)
+                    @foreach(\App\Models\Category::all() as $category)
                         <option value="{{ $category->id }}">{{ $category->name  }}</option>
                     @endforeach
                 </select>

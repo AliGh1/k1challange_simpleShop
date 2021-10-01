@@ -63,8 +63,12 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
                         <a href="#" class="text-indigo-600 hover:text-indigo-900">Gallery</a>
-                        <a href="#" class="text-yellow-500 hover:text-yellow-900">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                        <a href="{{ route('admin.products.edit',$product) }}" class="text-yellow-500 hover:text-yellow-900">Edit</a>
+                        <form class="inline" action="{{ route('admin.products.destroy' , $product->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
@@ -72,9 +76,10 @@
             </tbody>
         </table>
 
-        <div>
-            {{ $products->render() }}
-        </div>
+
+    </div>
+    <div class="mt-4">
+        {{ $products->render() }}
     </div>
 
 
