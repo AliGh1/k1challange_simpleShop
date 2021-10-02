@@ -19,7 +19,7 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
-    public function gallery(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function galleries(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(ProductGallery::class);
     }
