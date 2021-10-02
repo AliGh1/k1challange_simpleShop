@@ -109,10 +109,15 @@ class ProductGalleryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\ProductGallery  $productGallery
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(ProductGallery $productGallery)
+    public function destroy(Product $product, ProductGallery $gallery)
     {
+        if(\File::exists(public_path($gallery->image)))
+            \File::delete(public_path($gallery->image));
 
+       $gallery->delete();
+
+       return back();
     }
 }

@@ -36,7 +36,7 @@
                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
                         <a href="{{ route('admin.categories.show', $gallery) }}" class="text-indigo-600 hover:text-indigo-900">Show</a>
                         <a href="{{ route('admin.categories.edit', $gallery) }}" class="text-yellow-500 hover:text-yellow-900">Edit</a>
-                        <form class="inline" action="{{ route('admin.products.gallery.destroy' , compact(['gallery'])) }}" method="POST">
+                        <form class="inline" action="{{ route('admin.products.gallery.destroy', [$product, $gallery]) }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>

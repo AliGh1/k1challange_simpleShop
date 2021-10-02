@@ -124,6 +124,12 @@ class ProductController extends Controller
         if(\File::exists(public_path($product->image)))
             \File::delete(public_path($product->image));
 
+        foreach($product->galleries()->get() as $gallery){
+
+            if(\File::exists(public_path($gallery->image)))
+                \File::delete(public_path($gallery->image));
+        }
+
         $product->delete();
 
         return back();
