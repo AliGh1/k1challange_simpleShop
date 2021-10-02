@@ -12,11 +12,11 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name' , 'parent'];
+    protected $fillable = ['name' , 'parent_id'];
 
     public function child(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Category::class , 'parent' , 'id');
+        return $this->hasMany(Category::class , 'parent_id' , 'id');
     }
 
     public function children(): \Illuminate\Database\Eloquent\Relations\HasMany

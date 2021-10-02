@@ -4,16 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return View
      */
-    public function index()
+    public function index(): View
     {
         $categories = Category::latest()->paginate(10);
         return view('admin.categories.index', compact('categories'));
@@ -22,9 +27,9 @@ class CategoryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return View
      */
-    public function create()
+    public function create(): View
     {
         return view('admin.categories.create');
     }
@@ -32,10 +37,10 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @param Request $request
+     * @return RedirectResponse|Redirector
      */
-    public function store(Request $request)
+    public function store(Request $request): Redirector|RedirectResponse
     {
         if($request->parent_id) {
             $request->validate([
@@ -49,7 +54,7 @@ class CategoryController extends Controller
 
         Category::create([
             'name' => $request->name,
-            'parent_id' => $request->parent ?? 0
+            'parent_id' => $request->parent_id ?? 0
         ]);
 
         return redirect(route('admin.categories.index'));
@@ -58,45 +63,65 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return View
      */
-    public function show(Category $category)
+    public function show(Category $category): View
     {
-        //
+        $products = $category->products()->paginate(10);
+        return view('admin.categories.show', compact(['category','products']));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return View
      */
-    public function edit(Category $category)
+    public function edit(Category $category): View
     {
-        //
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Category $category
+     * @return RedirectResponse|Redirector
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category): Redirector|RedirectResponse
     {
-        //
+        if($request->parent_id) {
+            $request->validate([
+                'parent_id' => 'exists:categories,id'
+            ]);
+        }
+
+        if ($request->parent_id == $category->id)
+            $request->parent_id = 0;
+
+        $request->validate([
+            'name' => 'required|min:3|string'
+        ]);
+
+        $category->update([
+            'name' => $request->name,
+            'parent_id' => $request->parent_id ?? 0
+        ]);
+
+        return redirect(route('admin.categories.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Category $category
+     * @return RedirectResponse
      */
-    public function destroy(Category $category)
+    public function destroy(Category $category): RedirectResponse
     {
-        //
+        $category->delete();
+        return back();
     }
 }

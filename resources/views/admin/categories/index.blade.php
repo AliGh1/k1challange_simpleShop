@@ -32,9 +32,13 @@
                         <div class="text-sm {{ $category->parent_id ? 'text-gray-900' : 'text-gray-400'}}">{{$categories->find($category->parent_id)?->name ?? 'none'}}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Show</a>
-                        <a href="#" class="text-yellow-500 hover:text-yellow-900">Edit</a>
-                        <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                        <a href="{{ route('admin.categories.show', $category) }}" class="text-indigo-600 hover:text-indigo-900">Show</a>
+                        <a href="{{ route('admin.categories.edit', $category) }}" class="text-yellow-500 hover:text-yellow-900">Edit</a>
+                        <form class="inline" action="{{ route('admin.categories.destroy' , $category->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
@@ -45,9 +49,6 @@
             {{ $categories->render() }}
         </div>
     </div>
-
-
-
 
 </x-admin-panel-layout>
 
