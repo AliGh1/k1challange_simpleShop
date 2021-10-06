@@ -48,7 +48,7 @@ class ProductController extends Controller
             'categories' => 'required',
         ]);
 
-        $validData = $this->uploadImage($request, $validData);
+        $validData = Product::uploadImage($request,$validData,300,300);
 
         $product = auth()->user()->products()->create($validData);
         $product->categories()->sync($validData['categories']);
@@ -104,7 +104,7 @@ class ProductController extends Controller
             if(\File::exists(public_path($product->image)))
                 \File::delete(public_path($product->image));
 
-            $validData = $this->uploadImage($request, $validData);
+            $validData = Product::uploadImage($request,$validData,300,300);
         }
 
         $product->update($validData);
@@ -133,37 +133,5 @@ class ProductController extends Controller
         $product->delete();
 
         return back();
-    }
-
-    /**
-     * @param Request $request
-     * @param array $validData
-     * @return array
-     */
-    private function uploadImage(Request $request, array $validData): array
-    {
-        $file = $request->file('image');
-
-        // create new random name
-        $name = \Str::random(12) . '.' . $file->getClientOriginalExtension();
-
-        $destinationPatch = '/images/' . now()->year . '/' . now()->month . '/' . now()->day . '/';
-
-        // save image
-        $file->move(public_path($destinationPatch), $name);
-
-        // image src
-        $src = public_path($destinationPatch) . $name;
-
-        // thumbnail src
-        $dest = public_path($destinationPatch) . $name;
-
-        Product::resize_crop_image(300, 300, $src, $dest);
-
-        // Thumbnail relative patch
-        $thumb = $destinationPatch . $name;
-
-        $validData['image'] = $thumb;
-        return $validData;
     }
 }

@@ -43,28 +43,7 @@ class ProductGalleryController extends Controller
             'image' => 'required',
         ]);
 
-        $file = $request->file('image');
-
-        // create new random name
-        $name = \Str::random(12) . '.' . $file->getClientOriginalExtension();
-
-        $destinationPatch = '/images/' . now()->year . '/' . now()->month . '/' . now()->day . '/';
-
-        // save image
-        $file->move(public_path($destinationPatch), $name);
-
-        // image src
-        $src = public_path($destinationPatch) . $name;
-
-        // thumbnail src
-        $dest = public_path($destinationPatch) . $name;
-
-        Product::resize_crop_image(1170, 780 , $src, $dest);
-
-        // Thumbnail relative patch
-        $thumb = $destinationPatch . $name;
-
-        $validData['image'] = $thumb;
+        $validData = ProductGallery::uploadImage($request, $validData, 1178, 780);
 
         $product->galleries()->create($validData);
 

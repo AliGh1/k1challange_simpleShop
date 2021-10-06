@@ -2,6 +2,9 @@
 
 namespace App\Traits;
 
+
+use Illuminate\Http\Request;
+
 trait HasImage
 {
     /**
@@ -12,7 +15,7 @@ trait HasImage
      * @param int $quality
      * @return false
      */
-    public static function resize_crop_image($max_width, $max_height, $source_file, $dst_dir, int $quality = 80): bool
+    private static function resize_crop_image($max_width, $max_height, $source_file, $dst_dir, int $quality = 80): bool
     {
         $image_size = getimagesize($source_file);
         $width = $image_size[0];
@@ -67,5 +70,38 @@ trait HasImage
             imagedestroy($src_img);
 
         return true;
+    }
+
+    /**
+     * @param Request $request
+     * @param array $validData
+     * @return array
+     */
+    public static function uploadImage(Request $request, array $validData, int $width, int $height): array
+    {
+        $file = $request->file('image');
+
+        // create new random name
+        $name = \Str::random(12) . '.' . $file->getClientOriginalExtension();
+
+        $destinationPatch = '/images/' . now()->year . '/' . now()->month . '/' . now()->day . '/';
+
+        // save image
+        $file->move(public_path($destinationPatch), $name);
+
+        // image src
+        $src = public_path($destinationPatch) . $name;
+
+        // thumbnail src
+        $dest = public_path($destinationPatch) . $name;
+
+        self::resize_crop_image($width, $height, $src, $dest);
+
+        // Thumbnail relative patch
+        $thumb = $destinationPatch . $name;
+
+        $validData['image'] = $thumb;
+
+        return $validData;
     }
 }
