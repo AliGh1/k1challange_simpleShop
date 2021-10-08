@@ -60,7 +60,7 @@
                         @endif
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Gallery</a>
+                        <a href="{{ route('admin.products.gallery.index', $product) }}" class="text-indigo-600 hover:text-indigo-900">Gallery</a>
                         <a href="{{ route('admin.products.edit',$product) }}" class="text-yellow-500 hover:text-yellow-900">Edit</a>
                         <form class="inline" action="{{ route('admin.products.destroy' , $product->id) }}" method="POST">
                             @csrf

@@ -3,7 +3,11 @@
         <h4 class="text-lg font-semibold tracking-wide text-gray-500">
             {{ $product->title }} Gallery
         </h4>
-        <x-new-link-button :href="route('admin.products.gallery.create', $product)">New Image</x-new-link-button>
+
+        @if(count($galleries) < 5)
+            <x-new-link-button :href="route('admin.products.gallery.create', $product)">New Image</x-new-link-button>
+        @endif
+
     </div>
 
     <!-- Images list -->
@@ -34,8 +38,8 @@
                         <div class="text-sm text-gray-900">{{ $gallery->alt }}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-1.5">
-                        <a href="{{ route('admin.categories.show', $gallery) }}" class="text-indigo-600 hover:text-indigo-900">Show</a>
-                        <a href="{{ route('admin.categories.edit', $gallery) }}" class="text-yellow-500 hover:text-yellow-900">Edit</a>
+                        <a href="{{ $gallery->image }}" class="text-indigo-600 hover:text-indigo-900">Show</a>
+                        <a href="{{ route('admin.products.gallery.edit', [$product, $gallery]) }}" class="text-yellow-500 hover:text-yellow-900">Edit</a>
                         <form class="inline" action="{{ route('admin.products.gallery.destroy', [$product, $gallery]) }}" method="POST">
                             @csrf
                             @method('DELETE')

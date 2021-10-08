@@ -18,6 +18,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/' , function() {
     return view('admin.index');
 });
-Route::resource('products', ProductController::class);
-Route::resource('products.gallery', ProductGalleryController::class);
+Route::resource('products', ProductController::class)->except('show');
+Route::resource('products.gallery', ProductGalleryController::class)->except('show');
 Route::resource('categories', CategoryController::class);
