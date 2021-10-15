@@ -1,4 +1,4 @@
-<div {{ $attributes->merge(['class' => 'p-3 shadow rounded-lg']) }}>
+<div {{ $attributes->merge(['class' => 'flex flex-col p-3 shadow rounded-lg']) }}>
 
     <div class="group relative">
 
@@ -9,7 +9,7 @@
 
         <!-- Product Title -->
         <h3 class="mt-2 font-semibold text-gray-900 tracking-wider">
-            <a href="{{ route('product.show', compact('product')) }}">
+            <a class="" href="{{ route('product.show', compact('product')) }}">
                 <span aria-hidden="true" class="absolute inset-0"></span>
                 {{ $product->title }}
             </a>
@@ -44,14 +44,16 @@
         </div>
     </div>
 
-    <!-- Add to Cart -->
-    @if($product->quantity)
-        <a href="{{ route('product.show', compact('product')) }}" class="mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-gray-600 cursor-pointer hover:text-white leading-5 bg-gray-200 hover:bg-gray-600 focus:outline-none focus:bg-gray-600 transition duration-150 ease-in-out">
-            Add to Cart
-        </a>
-    @else
-        <a class="mt-4 block px-4 py-2 opacity-70 text-sm font-semibold text-center rounded-md text-gray-600 cursor-not-allowed leading-5 bg-gray-200">
-            Out of stock
-        </a>
-    @endif
+    <div class="flex-grow flex">
+        <!-- Add to Cart -->
+        @if($product->quantity)
+            <a href="{{ route('product.show', compact('product')) }}" class="self-end w-full mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-gray-600 cursor-pointer hover:text-white leading-5 bg-gray-200 hover:bg-gray-600 focus:outline-none focus:bg-gray-600 transition duration-150 ease-in-out">
+                Add to Cart
+            </a>
+        @else
+            <a class="self-end w-full mt-4 block px-4 py-2 opacity-70 text-sm font-semibold text-center rounded-md text-gray-600 cursor-not-allowed leading-5 bg-gray-200">
+                Out of stock
+            </a>
+        @endif
+    </div>
 </div>
