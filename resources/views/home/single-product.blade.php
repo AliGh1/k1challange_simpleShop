@@ -14,6 +14,29 @@
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid grid-cols-4 gap-4">
+                    <div class="col-span-4 lg:col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 flex" x-data="{ tab: '{{ $product->galleries()->first()->image }}' }">
+                            <div class="mr-4 flex flex-col justify-between">
+                                @foreach($product->galleries()->get() as $gallery)
+                                    <div class="w-16 h-16 hover:opacity-60 transition ease-in-out  cursor-pointer rounded-lg border-b shadow overflow-hidden"
+                                         :class="{ 'opacity-60': tab === '{{$gallery->image}}' }"
+                                         @mouseenter="tab = '{{$gallery->image}}'">
+                                        <img class="w-full h-full" src="{{ $gallery->image }}" alt="{{ $gallery->alt }}">
+                                    </div>
+                                @endforeach
+                            </div>
+                            @foreach($product->galleries()->get() as $gallery)
+                                <div x-show="tab === '{{ $gallery->image }}'" class="cursor-zoom-in w-full aspect-w-1 aspect-h-1 md:aspect-none md:max-w-sm rounded-lg shadow overflow-hidden">
+                                    <img class="w-full h-full object-center object-cover" @click="tab = '{{ $gallery->image }}-full'" src="{{ $gallery->image }}" alt="{{ $gallery->alt }}">
+                                </div>
+                                <div x-show="tab === '{{ $gallery->image }}-full'" @click="tab = '{{$gallery->image}}'">
+                                    <div class="cursor-pointer fixed inset-0 bg-gray-800 opacity-70"></div>
+                                    <img class="absolute inset-0 max-h-full mx-auto z-10" src="{{ $gallery->image }}" alt="{{ $gallery->alt }}">
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
                     <div class="self-start col-span-4 lg:col-span-1 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-2">
                             <!-- Product Price -->
@@ -67,17 +90,9 @@
                                     Out of stock
                                 </a>
                             @endif
-
                         </div>
                     </div>
-                    <div class="col-span-4 lg:col-span-3 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-6 bg-white grid grid-cols-6 gap-6">
-                            {{ $product->title }}
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
         </div>
     </main>

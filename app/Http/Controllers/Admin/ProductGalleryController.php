@@ -46,7 +46,7 @@ class ProductGalleryController extends Controller
             'image' => 'required',
         ]);
 
-        $validData = ProductGallery::uploadImage($request, $validData, 1178, 780);
+        $validData = ProductGallery::uploadImage($request, $validData, 1000, 1000);
 
         $product->galleries()->create($validData);
 
@@ -85,7 +85,7 @@ class ProductGalleryController extends Controller
             if(\File::exists(public_path($gallery->image)))
                 \File::delete(public_path($gallery->image));
 
-            $validData = ProductGallery::uploadImage($request, $validData, 1178, 780);
+            $validData = ProductGallery::uploadImage($request, $validData, 1000, 1000);
         }
 
         $gallery->update($validData);
