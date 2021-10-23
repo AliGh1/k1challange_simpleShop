@@ -47,9 +47,12 @@
     <div class="flex-grow flex">
         <!-- Add to Cart -->
         @if($product->quantity)
-            <a href="{{ route('product.show', compact('product')) }}" class="self-end w-full mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-gray-600 cursor-pointer hover:text-white leading-5 bg-gray-200 hover:bg-gray-600 focus:outline-none focus:bg-gray-600 transition duration-150 ease-in-out">
-                Add to Cart
-            </a>
+            <form id="add-to-cart" method="POST" action="{{ route('cart.add', compact('product')) }}">
+                @csrf
+            </form>
+            <span onclick="document.getElementById('add-to-cart').submit()"  class="self-end w-full mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-gray-600 cursor-pointer hover:text-white leading-5 bg-gray-200 hover:bg-gray-600 focus:outline-none focus:bg-gray-600 transition duration-150 ease-in-out">
+                    Add to Cart
+            </span>
         @else
             <a class="self-end w-full mt-4 block px-4 py-2 opacity-70 text-sm font-semibold text-center rounded-md text-gray-600 cursor-not-allowed leading-5 bg-gray-200">
                 Out of stock
