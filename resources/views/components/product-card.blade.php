@@ -30,27 +30,30 @@
         <div class="mt-1.5 whitespace-nowrap">
             @if(!$product->quantity)
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-600">
-                Out of stock
-            </span>
+                    Out of stock
+                </span>
             @elseif($product->quantity < 5)
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-600">
-                Only {{ $product->quantity }}
-            </span>
+                    Only {{ $product->quantity }}
+                </span>
             @else
                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-600">
-                In Stock
-            </span>
+                    In Stock
+                </span>
             @endif
         </div>
+        @if($product->quantity && !($product->quantity - Cart::count($product)))
+            <span class="mt-1.5 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-600">{{ Cart::count($product) }} in your cart</span>
+        @endif
     </div>
 
     <div class="flex-grow flex">
         <!-- Add to Cart -->
-        @if($product->quantity)
-            <form id="add-to-cart" method="POST" action="{{ route('cart.add', compact('product')) }}">
+        @if($product->quantity && Cart::count($product) < $product->quantity)
+            <form id="add-to-cart-{{ $product->id }}" method="POST" action="{{ route('cart.add', compact('product')) }}">
                 @csrf
             </form>
-            <span onclick="document.getElementById('add-to-cart').submit()"  class="self-end w-full mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-gray-600 cursor-pointer hover:text-white leading-5 bg-gray-200 hover:bg-gray-600 focus:outline-none focus:bg-gray-600 transition duration-150 ease-in-out">
+            <span onclick="document.getElementById('add-to-cart-{{ $product->id }}').submit()"  class="self-end w-full mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-gray-600 cursor-pointer hover:text-white leading-5 bg-gray-200 hover:bg-gray-600 focus:outline-none focus:bg-gray-600 transition duration-150 ease-in-out">
                     Add to Cart
             </span>
         @else

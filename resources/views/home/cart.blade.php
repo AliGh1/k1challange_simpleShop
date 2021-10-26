@@ -26,57 +26,58 @@
 
                             <!-- carts list -->
                             <div class="shadow-sm mt-4 overflow-auto border-b border-gray-200 rounded-lg">
-                                <table class="min-w-full divide-y divide-gray-200 ">
+                                <table class="table-auto min-w-full divide-y divide-gray-200 ">
                                     <thead class="bg-gray-50">
                                     <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Title
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Price
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Quantity
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <th scope="col" class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Subtotal
                                         </th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                     @foreach(Cart::all() as $cart)
                                         <tr>
-                                            <td class="px-6 py-4">
+                                            <td class="px-4 py-3">
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 h-14 w-14">
                                                         <img class="w-full h-full object-center object-cover lg:w-full lg:h-full rounded" src="{{ $cart['product']->image }}" alt="{{ $cart['product']->name }}">
                                                     </div>
                                                     <div class="ml-4">
                                                         <div class="text-sm text-gray-900 leading-relaxed">
-                                                            {{ $cart['product']->title }}
+                                                            {{ $cart['product']->title }}2
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-3 whitespace-nowrap">
                                                 <div class="text-sm text-gray-900">
                                                     ${{ $cart['product']->price }}
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap">
+                                            <td class="px-4 py-3 whitespace-nowrap">
                                                 @if(!$cart['product']->quantity)
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-600">
                                                         Out of stock
                                                     </span>
                                                 @else
-                                                    <select class="text-sm rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                                    <select onchange="changeQuantity(event, '{{ $cart['id'] }}')" class="text-sm rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                                         @foreach(range(1 , $cart['product']->quantity) as $item)
                                                             <option value="{{ $item }}" {{  $cart['quantity'] == $item ? 'selected' : '' }}>{{ $item }}</option>
                                                         @endforeach
                                                     </select>
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4  whitespace-nowrap ">
+                                            <td class="px-4 py-3 whitespace-nowrap ">
                                                 <div class="flex items-baseline justify-center space-x-1.5">
                                                     <div class=" {{ ($cart['product']->discount ? 'text-xs text-red-600 line-through' : 'text-sm text-gray-900')  }} ">
                                                         ${{ $cart['product']->price * $cart['quantity'] }}
@@ -86,7 +87,15 @@
                                                         <div class="ml-2 text-sm text-gray-900">${{ $cart['product']->discount * $cart['quantity'] }}</div>
                                                     @endif
                                                 </div>
-
+                                            </td>
+                                            <td>
+                                                <form id="cart-delete-{{ $cart['id'] }}" method="POST" action="{{ route('cart.destroy', $cart['id']) }}">
+                                                    @csrf
+                                                    @method('delete')
+                                                </form>
+                                                <span class="pr-2 text-red-500 cursor-pointer text-lg" onclick="document.getElementById('cart-delete-{{ $cart['id'] }}').submit()">
+                                                        &times;
+                                                </span>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -118,7 +127,7 @@
                                 <div class="py-2 flex justify-between border-b">
                                     <span class="text-gray-500" >Discount:</span>
                                     <span class="text-gray-800">
-                                        %{{ round(100 * ($noDiscountPrice - $discountedPrice) / $noDiscountPrice,2) }}
+                                        %{{ $noDiscountPrice ? round(100 * ($noDiscountPrice - $discountedPrice) / $noDiscountPrice,2) : 0 }}
                                     </span>
                                 </div>
 
@@ -139,5 +148,22 @@
             </div>
         </div>
     </main>
+    <script>
+        function changeQuantity(event, id) {
+            axios.patch('/cart/quantity/update', {
+                id : id ,
+                quantity : event.target.value,
+            }, {
+                headers : {
+                    'X-CSRF-TOKEN' : document.head.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type' : 'application/json'
+                }
+            }).then(() => location.reload())
+            .catch(function (error) {
+               console.log(error);
+            });
+        }
+
+    </script>
 
 </x-guest-layout>

@@ -2,10 +2,11 @@
 
     <!-- Page Heading -->
     <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Single Products') }}
             </h2>
+            <x-cart-link />
         </div>
     </header>
 
@@ -131,21 +132,26 @@
                             </div>
 
                             <!-- Product Quantity -->
-                            <div class="mt-2 flex items-center">
-                                <x-label for="quantity" :value="__('Quantity:')" />
+                            <div class="mt-2">
+                                @if($product->quantity - Cart::count($product))
+                                    <form class="flex items-center" id="add-to-cart" method="POST" action="{{ route('cart.add', compact('product')) }}">
+                                        @csrf
+                                        <x-label for="quantity" :value="__('Quantity:')" />
 
-                                <select id="quantity" name="quantity" class="ml-4 py-1 text-sm rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                                    @foreach(range(1 , $product->quantity) as $item)
-                                        <option value="{{ $item }}">{{ $item }}</option>
-                                    @endforeach
-                                </select>
+                                        <select id="quantity" name="quantity" class="ml-4 py-1 text-sm rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                                            @foreach(range(1 , $product->quantity - Cart::count($product)) as $item)
+                                                <option value="{{ $item }}">{{ $item }}</option>
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                @else
+                                    <span class="mt-1.5 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-600">{{ Cart::count($product) }} in your cart</span>
+                                @endif
                             </div>
 
                             <!-- Add to Cart -->
-                            @if($product->quantity)
-                                <form id="add-to-cart" method="POST" action="{{ route('cart.add', compact('product')) }}">
-                                    @csrf
-                                </form>
+                            @if($product->quantity && Cart::count($product) < $product->quantity)
+
                                 <span onclick="document.getElementById('add-to-cart').submit()" class="self-end w-full mt-4 block px-4 py-2 text-sm font-semibold text-center rounded-md text-green-600 cursor-pointer hover:text-white leading-5 bg-green-200 hover:bg-green-600 focus:outline-none focus:bg-green-600 transition duration-150 ease-in-out">
                                     Add to Cart
                                 </span>

@@ -6,6 +6,9 @@ use App\Traits\HasImage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed $quantity
+ */
 class Product extends Model
 {
     use HasFactory, HasImage;

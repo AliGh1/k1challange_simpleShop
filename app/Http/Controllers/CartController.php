@@ -6,6 +6,7 @@ use App\Models\Product;
 use Cart;
 use Illuminate\Http\Request;
 
+
 class CartController extends Controller
 {
     public function index(): \Illuminate\Contracts\View\View
@@ -13,51 +14,53 @@ class CartController extends Controller
         return view('home.cart');
     }
 
-    public function addToCart(Product $product)
+    public function addToCart(Request $request, Product $product): \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
     {
-//        if(Cart::has($product)){
-//            if(Cart::count($product) < $product->inventory){
-//                Cart::update($product, 1);
-//            }else{
-//                alert()->error('متاسفانه محصول به سبد خرید اضافه نشد.','اتمام موجودی');
-//                return redirect('/cart');
-//            }
-//        }else {
+        $request->validate([
+            'quantity' => 'numeric'
+        ]);
+
+        $quantity = $request['quantity'] ?? 1;
+
+        if(Cart::has($product)){
+            if(Cart::count($product) <= $product->quantity - $quantity){
+                Cart::update($product, $quantity);
+            }else{
+                // no inventory
+                return redirect('/cart');
+            }
+        }else {
             Cart::put(
                 [
-                    'quantity' => 1,
+                    'quantity' => $quantity,
                 ],
                 $product
             );
-//        }
+        }
 
         return redirect('/cart');
     }
 
-//    public function quantityChange(Request $request)
-//    {
-//        $data = $request->validate([
-//            'quantity' => 'required',
-//            'id' => 'required',
-////            'cart' => 'required',
-//        ]);
-//
-//        if(Cart::has($data['id'])){
-//            Cart::update($data['id'], [
-//                'quantity' => $data['quantity'],
-//            ]);
-//
-//            return response(['status' => 'success']);
-//        }
-//
-//        return response(['status' => 'error'], 404);
-//    }
-//
-//    public function deleteFromCart($id)
-//    {
-//        Cart::delete($id);
-//
-//        alert()->success('محصول مورد نظر با موفقیت از سبد خرید حذف شد.');
-//        return back();
-//    }
+    public function updateQuantity(Request $request): \Illuminate\Http\Response
+    {
+        $request->validate([
+            'quantity' => 'required',
+            'id' => 'required',
+        ]);
+
+        if(Cart::has($request['id'])){
+            Cart::update($request['id'], [
+                'quantity' => $request['quantity'],
+            ]);
+            return response(['status' => 'success']);
+        }
+
+        return response(['status' => 'error'], 404);
+    }
+
+    public function deleteCartItem($id): \Illuminate\Http\RedirectResponse
+    {
+        Cart::delete($id);
+        return back();
+    }
 }
