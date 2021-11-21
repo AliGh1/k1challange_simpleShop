@@ -46,7 +46,7 @@
                         </div>
 
                         <!-- Product details -->
-                        <div class="p-3 col-span-2 sm:col-span-1 flex flex-col">
+                        <div class="p-3 col-span-2 sm:col-span-1 relative flex flex-col">
                             <h4 class="font-semibold text-lg text-gray-800 tracking-wide leading-relaxed">{{ $product->title }}</h4>
 
                             <!-- Categories -->
@@ -91,10 +91,29 @@
                                 @if($product->discount)
                                     <span class="text-gray-600">You Save:</span>
                                     <span class="text-sm text-gray-800">
-                                        ${{ $product->price - $product->discount }} ({{ 100 * ($product->price - $product->discount) / $product->price }}%)
+                                        ${{ $product->price - $product->discount }} ({{ round(100 * ($product->price - $product->discount) / $product->price, 2) }}%)
                                     </span>
                                 @endif
                             </div>
+
+                            @auth
+                                <!-- like product -->
+                                <div class="absolute right-0 bottom-0 flex space-x-1.5">
+                                    <span class="text-md text-gray-700">
+                                        {{ $product->likes()->count() }}
+                                    </span>
+                                    <form action="{{ route('like') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="likeable_type" value="{{ get_class($product) }}"/>
+                                        <input type="hidden" name="likeable_id" value="{{ $product->id }}"/>
+                                        <button type="submit">
+                                            <svg class="fill-current {{ auth()->user()->isLiked($product) ? 'text-red-500' : 'text-gray-200' }} w-5 h-5" viewBox="0 0 16 16">
+                                                <path d="M8.612 2.347 8 2.997l-.612-.65c-1.69-1.795-4.43-1.795-6.12 0-1.69 1.795-1.69 4.706 0 6.502l.612.65L8 16l6.12-6.502.612-.65c1.69-1.795 1.69-4.706 0-6.502-1.69-1.795-4.43-1.795-6.12.001z"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            @endauth
                         </div>
                     </div>
 

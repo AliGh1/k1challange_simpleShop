@@ -32,4 +32,7 @@ Route::prefix('/cart')->group(function() {
     Route::delete('/delete/{cart}', [\App\Http\Controllers\CartController::class, 'deleteCartItem'])->name('cart.destroy');
 });
 
+Route::post('like', [\App\Http\Controllers\LikeController::class, 'like'])
+    ->middleware(['auth'])->name('like');
+
 require __DIR__.'/auth.php';
