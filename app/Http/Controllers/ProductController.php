@@ -4,11 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
     public function index(Request $request): \Illuminate\Contracts\View\View
     {
+        $request->validate([
+            'min' => 'nullable|integer|min:0',
+            'max' => 'nullable|integer|min:0',
+            'search' => 'nullable|string',
+            'category' => 'nullable|exists:categories,name',
+            'orderby' => ['nullable',Rule::in(['sold', 'likes', 'max_price', 'min_price', 'latest'])],
+        ]);
+
         $products = Product::query()->withCount('likes')
             ->selectRaw('ifNull(`discount`, `price`) as `final_price`');
 
@@ -36,7 +45,7 @@ class ProductController extends Controller
             default => $products->latest()
         };
 
-        $products = $products->paginate(15);
+        $products = $products->paginate(15)->withQueryString();
 
         return view('home.products', compact('products'));
     }

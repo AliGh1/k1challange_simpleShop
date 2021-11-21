@@ -47,9 +47,8 @@ Enjoy it.
 ![Screenshot 2021-10-26 180837](https://user-images.githubusercontent.com/60067642/138902695-d099e5b9-0399-4a04-b97e-c2300deeced6.png)
 ![Screenshot 2021-10-26 180911](https://user-images.githubusercontent.com/60067642/138902840-0dcef2d3-ceb1-4ec3-8f89-9e141a3c766a.png)
 ![Screenshot 2021-10-26 180947](https://user-images.githubusercontent.com/60067642/138902858-d8831354-49e9-4ccf-9e8f-521eaa6a50e3.png)
-![Screenshot 2021-10-26 181020](https://user-images.githubusercontent.com/60067642/138902863-44267958-5fad-4df7-86d3-0a6628ca1113.png)
-![Screenshot 2021-10-26 181044](https://user-images.githubusercontent.com/60067642/138902871-710b80b5-e7f8-4326-a0f5-b5fd9560c380.png)
-
+![image](https://user-images.githubusercontent.com/60067642/142770822-f3aa540e-c4e5-40ef-99c1-0d5aec3d3f9e.png)
+![image](https://user-images.githubusercontent.com/60067642/142770839-c1f53c74-30d5-4b8d-a7e0-347c25ae90e5.png)
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
